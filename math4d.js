@@ -34,15 +34,15 @@ class PointSpaceTime extends PointSpace {
       const pointSpace = args[0];
       PointSpace.validate( pointSpace );
 
-      x = pointSpace.x;
-      y = pointSpace.y;
-      z = pointSpace.z;
+      x = pointSpace.x || x;
+      y = pointSpace.y || y;
+      z = pointSpace.z || z;
 
     } else {
 
-      x = args[0];
-      y = args[1];
-      z = args[2];
+      x = args[0] || x;
+      y = args[1] || y;
+      z = args[2] || z;
 
     }
     super( x, y, z );
@@ -67,8 +67,8 @@ class PointSpaceTime extends PointSpace {
 
   }
 
-  add( point ) {
-    PointSpaceTime.validate( point );
+  sum( point ) {
+    PointSpace.validate( point );
     
     super.add( point );
 
