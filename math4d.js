@@ -109,8 +109,8 @@ class MovingPointSpaceTime extends PointSpaceTime {
     if (!is.number( new_t )) throw new Error(`Invalid time! Given: ${ new_t }`);
 
     const dt = new_t - this.t;
+    
     const dv = this.v.clone().multiplyScalar( dt );
-
     this.add( dv );
 
     this._t = new_t;
