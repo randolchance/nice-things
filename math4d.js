@@ -1,9 +1,18 @@
 import { is } from "./utils";
 
 import { PointSpace } from "./math3d";
+import { EventDispatcher } from "three";
 
 
 class PointSpaceTime extends PointSpace {
+
+  static _dispatcher = new EventDispatcher();
+
+  static update( dt ) {
+
+    this._dispatcher.dispatchEvent({ type: 'update', dt });
+
+  }
 
   static validate( potentialPointSpaceTime ) {
     const is_invalid = is.any([
@@ -40,6 +49,8 @@ class PointSpaceTime extends PointSpace {
 
     this._t = t;
 
+    PointSpaceTime._dispatcher.addEventListener( 'update', dt => this.t += dt );
+
   }
 
   get isPointSpaceTime() {
@@ -69,4 +80,86 @@ class PointSpaceTime extends PointSpace {
 }
 
 
-export { PointSpaceTime }
+class MovingPointSpaceTime extends PointSpaceTime {
+
+  constructor( v, ...args ) {
+    super( ...args );
+
+    v = v || new PointSpace();
+    PointSpace.validate( v );
+    if (v.isPointSpaceTime) {
+
+      throw new Error(`Velocity vector is not a static vector (PointSpace or Vector3)!`);
+
+    }
+
+    this._v = v;
+
+  }
+
+  get v() {
+    return this._v;
+  }
+
+  get t() {
+    return this._t;
+  }
+
+  set t( new_t ) {
+    if (!is.number( new_t )) throw new Error(`Invalid time! Given: ${ new_t }`);
+
+    const dt = new_t - this.t;
+    const dv = this.v.clone().multiplyScalar( dt );
+
+    this.add( dv );
+
+    this._t = new_t;
+
+  }
+
+}
+
+
+class AcceleratingPointSpaceTime extends PointSpaceTime {
+  constructor( a, ...args ) {
+    super( ...args );
+
+    a = a || new PointSpace();
+    PointSpace.validate( a );
+    if (a.isPointSpaceTime) {
+
+      throw new Error(`Acceleration vector is not a static vector (PointSpace or Vector3)!`);
+
+    }
+
+    this._a = a;
+    
+  }
+
+  get v() {
+    return this._v;
+  }
+
+  get t() {
+    return this._t;
+  }
+
+  set t( new_t ) {
+    if (!is.number( new_t )) throw new Error(`Invalid time! Given: ${ new_t }`);
+
+    const dt = new_t - this.t;
+
+    const dv = this.v.clone().multiplyScalar( dt );
+    this.add( dv );
+
+    const da = this.a.clone().multiplyScalar( dt );
+    this.v.add( da );
+
+    this._t = new_t;
+
+  }
+
+}
+
+
+export { PointSpaceTime, MovingPointSpaceTime, AcceleratingPointSpaceTime }
