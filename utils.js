@@ -147,7 +147,7 @@ export class Range {
     const is_forward = !in_reverse;
 
     const start_step = exclude_first ? 1 : 0;
-    const end_step = include_last ? number_of_divisions : number_of_divisions - 1;
+    const end_step = number_of_divisions;
 
     for (let step = start_step; step <= end_step; step++) {
       if (exclude_first && step === 0 || !include_last && step === number_of_divisions) continue;
