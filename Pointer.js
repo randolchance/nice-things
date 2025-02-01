@@ -18,13 +18,14 @@ const BUTTONS = {
 }
 
 class Pointer {
-	constructor( event ) {
+	constructor( event, absolute=false ) {
 		if (!event instanceof MouseEvent || !event instanceof TouchEvent) {
 			throw new TypeError( `Expected MouseEvent or TouchEvent, got ${ event }` );
 		}
 
 		const { currentTarget, changedTouches, buttons } = event;
-		const { left, top, width, height } = currentTarget.getBoundingClientRect();
+		const target = absolute ? document.body : currentTarget;
+		const { left, top, width, height } = target.getBoundingClientRect();
 		const { clientX, clientY } = changedTouches ? changedTouches[ 0 ] : event;
 		this.x = ( clientX - left ) / width * 2 - 1;
 		this.y = - ( clientY - top ) / height * 2 + 1;
