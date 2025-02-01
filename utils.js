@@ -138,7 +138,7 @@ export function makeUrlString( url ) {
 
 export class Range {
 
-  static lerp = new Range(0,1);
+  static lerp = new Range();
 
   static *through( number_of_divisions, params={} ) {
     number_of_divisions = abs( number_of_divisions );
@@ -157,7 +157,7 @@ export class Range {
     }
   }
 
-  constructor( minimum, maximum ) {
+  constructor( minimum=0, maximum=1 ) {
     this.min = minimum;
     this.max = maximum;
   }
