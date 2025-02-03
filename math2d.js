@@ -16,6 +16,11 @@ export const THETA_RANGE = new Range( 0, PI );
 export const ABSOLUTE_RANGE_RADIANS = PHI_RANGE;
 export const RELATIVE_RANGE_RADIANS = new Range( -PI, PI );
 
+export const COUNTER_CLOCKWISE = 1;
+export const CLOCKWISE = -COUNTER_CLOCKWISE;
+
+export const FORWARD = COUNTER_CLOCKWISE;
+export const BACKWARD = -FORWARD;
 
 export const RANGES = {
   absolute: {

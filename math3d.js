@@ -1,4 +1,5 @@
 import { is } from "./utils";
+import { FORWARD } from "./math2d";
 
 import { Vector3 } from "three";
 
@@ -20,6 +21,8 @@ class PointSpace extends Vector3 {
     const is_invalid = is.any([
       !potentialPointSpace.isPointSpace,
       !potentialPointSpace.isVector3,
+      !potentialPointSpace.isVector2,
+      !is.any( [ potentialPointSpace.x, potentialPointSpace.y, potentialPointSpace.z ].map( is.something ) ),
     ]);
     
     if (is_invalid) {
@@ -36,6 +39,17 @@ class PointSpace extends Vector3 {
 
   get isPointSpace() {
     return true;
+  }
+
+  *spatialComponents( start_index=0, step=FORWARD ) {
+    const components = [ this.x, this.y, this.z ].filter( is.number );
+    const length = components.length;
+    start_index %= length
+    for (let index = start_index, count = length; --count >= 0; index = (index + step) % length) {
+
+      yield components.at( index );
+
+    }
   }
 
 }
