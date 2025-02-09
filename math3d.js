@@ -18,7 +18,7 @@ const AXIS = {
 class PointSpace extends Vector3 {
 
   static validate( potentialPointSpace ) {
-    const is_invalid = is.any([
+    const is_invalid = is.all([
       !potentialPointSpace.isPointSpace,
       !potentialPointSpace.isVector3,
       !potentialPointSpace.isVector2,
