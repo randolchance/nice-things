@@ -33,7 +33,23 @@ class PointSpace extends Vector3 {
   }
 
   constructor( ...args ) {
-    super( ...args );
+    let x=0, y=0, z=0;
+    if (args.length === 1) {
+
+      const [ pointSpace ] = args;
+      PointSpace.validate( pointSpace );
+
+      x = is.number( pointSpace.x ) ? pointSpace.x : x;
+      y = is.number( pointSpace.y ) ? pointSpace.y : y;
+      z = is.number( pointSpace.z ) ? pointSpace.z : z;
+
+    } else {
+
+      x = is.number( args[0] ) ? args[0] : x;
+      y = is.number( args[1] ) ? args[1] : y;
+      z = is.number( args[2] ) ? args[2] : z;
+    }
+    super( x, y, z );
 
   }
 
